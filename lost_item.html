@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Lost Item - Lost & Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Lost & Found
+    </div>
+
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</nav>
+
+
+<main class="dashboard">
+
+    <div class="welcome">
+        <h1>Report Lost Item</h1>
+        <p>Provide the details of the item you lost.</p>
+    </div>
+
+
+    <div class="auth-container">
+
+        <form method="POST">
+
+            <div class="form-group">
+                <label>Item Name</label>
+                <input
+                    type="text"
+                    name="item_name"
+                    placeholder="Example: Wallet"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <input
+                    type="text"
+                    name="category"
+                    placeholder="Example: Accessories"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea
+                    name="description"
+                    placeholder="Describe the item..."
+                    rows="4"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Color</label>
+                <input
+                    type="text"
+                    name="color"
+                    placeholder="Example: Black"
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Lost Date</label>
+                <input
+                    type="date"
+                    name="lost_date"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Lost Location</label>
+                <input
+                    type="text"
+                    name="lost_location"
+                    placeholder="Example: College Library"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn btn-full">
+                Submit Lost Item
+            </button>
+
+        </form>
+
+        <br>
+
+        <a href="/dashboard">Back to Dashboard</a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

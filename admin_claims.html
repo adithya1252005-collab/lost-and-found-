@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Claims - Lost & Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .claims-table-wrapper {
+            overflow-x: auto;
+            margin-top: 24px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .claims-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .claims-table th,
+        .claims-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .claims-table th {
+            background: #a71930;
+            color: white;
+        }
+
+        .claim-status {
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+
+        .claim-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .claim-actions form {
+            margin: 0;
+        }
+
+        .approve-btn,
+        .reject-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .approve-btn {
+            background: #237a3b;
+        }
+
+        .reject-btn {
+            background: #a71930;
+        }
+
+        .flash-message {
+            padding: 12px;
+            margin-bottom: 16px;
+            background: #f8e8eb;
+            color: #8b1528;
+            border-left: 4px solid #a71930;
+            border-radius: 5px;
+        }
+
+        .empty-state {
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">Lost &amp; Found</div>
+
+    <div class="nav-links">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<main class="dashboard">
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="welcome">
+        <h1>Manage Claims</h1>
+        <p>Review submitted claims and decide whether to approve or reject them.</p>
+    </div>
+
+    {% if claims %}
+
+    <div class="claims-table-wrapper">
+        <table class="claims-table">
+            <thead>
+                <tr>
+                    <th>Claim ID</th>
+                    <th>Item</th>
+                    <th>Claimant</th>
+                    <th>Date</th>
+                    <th>Verification Details</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for claim in claims %}
+                <tr>
+                    <td>{{ claim[0] }}</td>
+                    <td>{{ claim[1] }}</td>
+                    <td>{{ claim[2] }}</td>
+                    <td>{{ claim[3] }}</td>
+                    <td>{{ claim[5] or "Not provided" }}</td>
+                    <td class="claim-status">{{ claim[4] }}</td>
+
+                    <td>
+                        {% if claim[4] == 'pending' %}
+                        <div class="claim-actions">
+
+                            <form action="{{ url_for('review_claim', claim_id=claim[0]) }}"
+                                  method="POST">
+                                <input type="hidden" name="decision" value="approved">
+                                <button type="submit" class="approve-btn">
+                                    Approve
+                                </button>
+                            </form>
+
+                            <form action="{{ url_for('review_claim', claim_id=claim[0]) }}"
+                                  method="POST">
+                                <input type="hidden" name="decision" value="rejected">
+                                <button type="submit" class="reject-btn">
+                                    Reject
+                                </button>
+                            </form>
+
+                        </div>
+                        {% else %}
+                            No action required
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        <h3>No Claims Yet</h3>
+        <p>Submitted claims will appear here.</p>
+    </div>
+
+    {% endif %}
+
+    <div class="back-button">
+        <a href="{{ url_for('dashboard') }}" class="btn">
+            Back to Dashboard
+        </a>
+    </div>
+
+</main>
+
+</body>
+</html>

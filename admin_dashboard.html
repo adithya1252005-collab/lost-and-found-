@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f7f8;
+            color: #292929;
+        }
+
+        nav {
+            background: #a71930;
+            color: white;
+            padding: 22px 6%;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px #0000000d;
+            border-top: 4px solid #a71930;
+        }
+
+        .card p {
+            color: #666;
+        }
+
+        .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 25px;
+            color: #a71930;
+            text-decoration: none;
+        }
+
+        @media (min-width: 700px) {
+            .cards {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>Lost & Found | Admin Panel</nav>
+
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <p>Manage your Lost and Found Management System.</p>
+
+        <div class="cards">
+            <div class="card">
+                <p>Total Users</p>
+                <div class="number">{{ total_users }}</div>
+            </div>
+
+            <div class="card">
+                <p>Lost Items</p>
+                <div class="number">{{ total_lost }}</div>
+            </div>
+
+            <div class="card">
+                <p>Found Items</p>
+                <div class="number">{{ total_found }}</div>
+            </div>
+
+            <div class="card">
+                <p>Total Claims</p>
+                <div class="number">{{ total_claims }}</div>
+            </div>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}">Back to User Dashboard</a>
+        &nbsp; | &nbsp;
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</body>
+</html>

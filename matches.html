@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Potential Matches</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f8f8f8;
+        }
+        h2 { color: #a71930; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #a71930;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2>Potential Item Matches</h2>
+    <p>These are suggested matches, not confirmed ownership.</p>
+
+    {% if matches %}
+    <table>
+        <tr>
+            <th>Lost Item</th>
+            <th>Found Item</th>
+            <th>Match Score</th>
+            <th>Status</th>
+        </tr>
+        {% for match in matches %}
+        <tr>
+            <td>{{ match[1] }}</td>
+            <td>{{ match[3] }}</td>
+            <td>{{ match[4] }}%</td>
+            <td>{{ match[5] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>No potential matches found yet.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('dashboard') }}">Back to Dashboard</a></p>
+</body>
+</html>

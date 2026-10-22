@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notifications</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            margin: 30px;
+        }
+
+        h2 {
+            color: #a71930;
+        }
+
+        .notification {
+            background: white;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #a71930;
+            border-radius: 5px;
+        }
+
+        .date {
+            color: #777;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>My Notifications</h2>
+
+    {% if notifications %}
+        {% for notification in notifications %}
+            <div class="notification">
+                <p>{{ notification[1] }}</p>
+
+                <div class="date">
+                    {{ notification[2] }}
+                    {% if not notification[3] %}
+                        — Unread
+                    {% else %}
+                        — Read
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no notifications yet.</p>
+    {% endif %}
+
+    <p>
+        <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    </p>
+</body>
+</html>

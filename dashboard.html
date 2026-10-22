@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Lost & Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Lost & Found
+    </div>
+
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</nav>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="success-message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<main class="dashboard">
+
+    <div class="welcome">
+        <h1>Welcome, {{ name }} </h1>
+        <p>
+            Find what you've lost. Help others find what they've lost.
+        </p>
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="card-icon"></div>
+
+            <h2>Report Lost Item</h2>
+
+            <p>
+                Lost something? Add the details so others can help you find it.
+            </p>
+
+            <a href="/lost-item" class="btn">
+                Report Lost Item
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon"></div>
+
+            <h2>Report Found Item</h2>
+
+            <p>
+                Found something? Report it and help return it to its owner.
+            </p>
+
+            <a href="/found-item" class="btn">
+                Report Found Item
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon"></div>
+
+            <h2>Find Items</h2>
+
+            <p>
+                Browse lost and found items and look for a possible match.
+            </p>
+
+            <a href="/find-items" class="btn">
+                Browse Items
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

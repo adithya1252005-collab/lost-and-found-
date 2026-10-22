@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Items - Lost & Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .flash-message {
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            background: #f8e8eb;
+            color: #8b1528;
+            border-left: 4px solid #a71930;
+            border-radius: 5px;
+        }
+
+        .claim-form {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .claim-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .claim-form textarea {
+            width: 100%;
+            min-height: 85px;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font: inherit;
+            resize: vertical;
+        }
+
+        .claim-form button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        Lost &amp; Found
+    </div>
+
+    <div class="nav-links">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<main class="dashboard">
+
+    <!-- FLASH MESSAGES -->
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <!-- PAGE HEADER -->
+
+    <div class="welcome">
+        <h1>Find Items</h1>
+        <p>
+            Browse reported lost and found items and see if you can identify a match.
+        </p>
+    </div>
+
+    <!-- LOST ITEMS SECTION -->
+
+    <section class="items-section">
+
+        <div class="section-header">
+            <div>
+                <h2>Lost Items</h2>
+                <p>Items reported as lost by users.</p>
+            </div>
+
+            <span class="item-count">
+                {{ lost_items|length }} Items
+            </span>
+        </div>
+
+        {% if lost_items %}
+
+        <div class="items-grid">
+
+            {% for item in lost_items %}
+
+            <div class="item-card">
+
+                <div class="item-card-header">
+                    <span class="status lost-status">LOST</span>
+                    <span class="item-number">#{{ item[0] }}</span>
+                </div>
+
+                <h3>{{ item[1] }}</h3>
+
+                <div class="item-details">
+
+                    <div class="detail">
+                        <span class="detail-label">Category</span>
+                        <span>{{ item[2] }}</span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label">Color</span>
+                        <span>{{ item[4] if item[4] else "Not specified" }}</span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label">Date</span>
+                        <span>{{ item[5] }}</span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label">Location</span>
+                        <span>{{ item[6] }}</span>
+                    </div>
+
+                </div>
+
+                <div class="description">
+                    <span class="detail-label">Description</span>
+                    <p>{{ item[3] or "No description provided." }}</p>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <h3>No Lost Items</h3>
+            <p>No items have been reported as lost yet.</p>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+    <!-- FOUND ITEMS SECTION -->
+
+    <section class="items-section">
+
+        <div class="section-header">
+            <div>
+                <h2>Found Items</h2>
+                <p>Items reported as found by users.</p>
+            </div>
+
+            <span class="item-count">
+                {{ found_items|length }} Items
+            </span>
+        </div>
+
+        {% if found_items %}
+
+        <div class="items-grid">
+
+            {% for item in found_items %}
+
+            <div class="item-card">
+
+                <div class="item-card-header">
+                    <span class="status found-status">FOUND</span>
+                    <span class="item-number">#{{ item[0] }}</span>
+                </div>
+
+                <h3>{{ item[1] }}</h3>
+
+                <div class="item-details">
+
+                    <div class="detail">
+                        <span class="detail-label">Category</span>
+                        <span>{{ item[2] }}</span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label">Color</span>
+                        <span>{{ item[4] if item[4] else "Not specified" }}</span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label">Date</span>
+                        <span>{{ item[5] }}</span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="detail-label">Location</span>
+                        <span>{{ item[6] }}</span>
+                    </div>
+
+                </div>
+
+                <div class="description">
+                    <span class="detail-label">Description</span>
+                    <p>{{ item[3] or "No description provided." }}</p>
+                </div>
+
+                <!-- MANUAL CLAIM FORM -->
+
+                <form
+                    action="{{ url_for('claim_item', found_id=item[0]) }}"
+                    method="POST"
+                    class="claim-form">
+
+                    <label for="verification_{{ item[0] }}">
+                        Verification Details
+                    </label>
+
+                    <textarea
+                        id="verification_{{ item[0] }}"
+                        name="verification_details"
+                        placeholder="Describe identifying details to prove ownership"
+                        required></textarea>
+
+                    <button type="submit" class="btn">
+                        Claim This Item
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <h3>No Found Items</h3>
+            <p>No items have been reported as found yet.</p>
+        </div>
+
+        {% endif %}
+
+    </section>
+
+    <!-- BACK BUTTON -->
+
+    <div class="back-button">
+        <a href="{{ url_for('dashboard') }}" class="btn">
+            Back to Dashboard
+        </a>
+    </div>
+
+</main>
+
+</body>
+</html>
